@@ -1,0 +1,25 @@
+---
+- name: Start docker statsd_exporter container
+  docker_service:
+    state: present
+    project_name: prometheus_statsd_exporter
+    definition:
+      version: '2'
+      services:
+        statsd_exporter:
+          image: "{{ statsd_exporter_docker_image }}"
+          command: "--statsd.mapping-config='/var/lib/statsd_exporter/statsd.conf' --web.listen-address='0.0.0.0:{{ statsd_exporter_host_port }}' --statsd.listen-tcp='0.0.0.0:8125' --statsd.listen-udp='0.0.0.0:8125'"
+          container_name: "{{ statsd_exporter_container_name }}"
+          ports:
+            - "127.0.0.1:{{ statsd_exporter_host_port }}:{{ statsd_exporter_host_port }}"
+            - "127.0.0.1:8125:8125/udp"
+            - "127.0.0.1:8125:8125/tcp"
+          volumes:
+            - "{{ statsd_exporter_config_dir }}:/config"
+          hostname: "{{ ansible_host }}"
+          restart: always
+          labels: "{{ statsd_exporter_docker_labels }}"
+      networks:
+        default:
+          external:
+            name: "{{ statsd_exporter_docker_network_name }}"

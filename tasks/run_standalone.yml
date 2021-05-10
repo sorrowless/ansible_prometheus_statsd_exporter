@@ -1,0 +1,62 @@
+---
+- name: Get statsd exporter
+  become: yes
+  become_user: root
+  get_url:
+    url: "https://github.com/prometheus/statsd_exporter/releases/download/v{{ statsd_exporter_version }}/statsd_exporter-{{ statsd_exporter_version }}.{{ statsd_exporter_arch }}.tar.gz"
+    dest: "{{ statsd_exporter_config_dir }}/sources/statsd_exporter-{{ statsd_exporter_version }}.{{ statsd_exporter_arch }}.tar.gz"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Unzip statsd exporter
+  become: yes
+  become_user: root
+  unarchive:
+    remote_src: yes
+    src: "{{ statsd_exporter_config_dir }}/sources/statsd_exporter-{{ statsd_exporter_version }}.{{ statsd_exporter_arch }}.tar.gz"
+    dest: "{{ statsd_exporter_config_dir }}/sources/"
+    creates: "{{ statsd_exporter_config_dir }}/sources/statsd_exporter"
+
+- name: Copy exporter to PATH
+  become: yes
+  become_user: root
+  copy:
+    remote_src: yes
+    src: "{{ statsd_exporter_config_dir }}/sources/statsd_exporter-{{ statsd_exporter_version }}.{{ statsd_exporter_arch }}/statsd_exporter"
+    dest: /usr/local/bin/statsd_exporter
+    mode: 0755
+    owner: root
+    group: root
+  notify:
+    - Restart statsd exporter
+
+- name: Create statsd exporter user
+  user:
+    name: "{{ statsd_exporter_user }}"
+    comment: "statsd exporter user"
+    shell: /usr/sbin/nologin
+
+- name: Exporters | statsd exporter | Ensure statsd exporter systemd unit
+  become: yes
+  become_user: root
+  template:
+    src: systemd.service.j2
+    dest: "/etc/systemd/system/statsd-exporter.service"
+    owner: root
+    group: root
+    mode: 0644
+  register: systemd_unitfile
+  notify:
+    - Restart statsd exporter
+
+- name: Exporters | statsd exporter | Enable systemd service
+  become: yes
+  become_user: root
+  systemd:
+    name: "statsd-exporter.service"
+    enabled: yes
+    daemon_reload: yes
+    state: started
+  when:
+    - systemd_unitfile.changed

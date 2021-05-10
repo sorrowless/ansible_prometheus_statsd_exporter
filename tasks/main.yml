@@ -1,0 +1,31 @@
+---
+- name: Ensure config dir
+  become: yes
+  become_user: root
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - "{{ statsd_exporter_config_dir }}"
+    - "{{ statsd_exporter_config_dir }}/sources"
+
+- name: Copy statsd config file
+  become: yes
+  become_user: root
+  template:
+    src: statsd.conf.j2
+    dest: "{{ statsd_exporter_config_dir }}/statsd.conf"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Include docker-related tasks
+  include_tasks: run_in_docker.yml
+  when: statsd_exporter_run_in_docker
+
+- name: Include standalone tasks
+  include_tasks: run_standalone.yml
+  when: not statsd_exporter_run_in_docker

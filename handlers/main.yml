@@ -1,0 +1,5 @@
+---
+- name: Restart statsd exporter
+  service:
+    name: statsd-exporter.service
+    state: restarted

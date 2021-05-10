@@ -1,0 +1,43 @@
+---
+statsd_exporter_config_dir: /var/lib/statsd_exporter
+statsd_exporter_run_in_docker: false
+statsd_exporter_docker_network_name: prom_network
+statsd_exporter_container_name: statsd_exporter
+statsd_exporter_docker_image: "prom/statsd_exporter:v0.20.2"
+statsd_exporter_docker_labels:
+  - prometheus
+  - exporter
+  - statsd_exporter
+statsd_exporter_host_address: 127.0.0.1
+statsd_exporter_host_port: 9102
+statsd_exporter_version: '0.20.2'
+statsd_exporter_arch: linux-amd64
+statsd_exporter_metrics_path: metrics
+statsd_exporter_user: statsd_exporter
+statsd_exporter_config: ""
+# mappings:
+# - match: ([\w-]+)\.gunicorn\.request\.status\.(\d+)
+#   match_type: regex
+#   name: "gunicorn_request_status"
+#   labels:
+#     status: "${2}"
+#     proj: "${1}"
+#     origin: "${1}.gunicorn.request.status.${2}"
+# - match: ([\w-]+)\.gunicorn\.request\.duration
+#   match_type: regex
+#   name: gunicorn_request_duration
+#   labels:
+#     proj: "${1}"
+#     origin: "${1}.gunicorn.request.duration"
+# - match: ([\w-]+)\.gunicorn\.workers
+#   match_type: regex
+#   name: "gunicorn_workers"
+#   labels:
+#     proj: "${1}"
+#     origin: "${1}.gunicorn.workers"
+# - match: ([\w-]+)\.gunicorn\.requests
+#   match_type: regex
+#   name: "gunicorn_requests"
+#   labels:
+#     proj: "${1}"
+#     origin: "${1}.gunicorn.requests"
