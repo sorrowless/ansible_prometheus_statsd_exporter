@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User={{ statsd_exporter_user }}
 Group={{ statsd_exporter_user }}
-ExecStart=/usr/local/bin/statsd_exporter --web.listen-address='{{ statsd_exporter_host_address }}:{{ statsd_exporter_host_port }}' --statsd.listen-tcp="{{ statsd_listen_tcp_adress }}" --statsd.listen-udp="{{ statsd_listen_udp_adress }}" --statsd.mapping-config='{{ statsd_exporter_config_dir }}/statsd.conf'
+ExecStart=/usr/local/bin/statsd_exporter --web.listen-address='{{ statsd_exporter_host_address }}:{{ statsd_exporter_host_port }}' --statsd.listen-tcp="{{ statsd_exporter_listen_tcp_adress }}" --statsd.listen-udp="{{ statsd_exporter_listen_udp_adress }}" --statsd.mapping-config='{{ statsd_exporter_config_dir }}/statsd.conf'
 ExecStop=/bin/kill -s TERM $MAINPID
 PrivateTmp=true
 Restart=on-failure
