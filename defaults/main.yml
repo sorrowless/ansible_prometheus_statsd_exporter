@@ -14,6 +14,8 @@ statsd_exporter_version: '0.20.2'
 statsd_exporter_arch: linux-amd64
 statsd_exporter_metrics_path: metrics
 statsd_exporter_user: statsd_exporter
+statsd_exporter_listen_tcp_adress: "127.0.0.1:8125"
+statsd_exporter_listen_udp_adress: "127.0.0.1:8125"
 statsd_exporter_config: ""
 # mappings:
 # - match: ([\w-]+)\.gunicorn\.request\.status\.(\d+)
