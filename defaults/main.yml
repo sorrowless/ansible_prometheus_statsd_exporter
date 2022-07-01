@@ -3,14 +3,14 @@ statsd_exporter_config_dir: /var/lib/statsd_exporter
 statsd_exporter_run_in_docker: false
 statsd_exporter_docker_network_name: prom_network
 statsd_exporter_container_name: statsd_exporter
-statsd_exporter_docker_image: "prom/statsd_exporter:v0.20.2"
+statsd_exporter_docker_image: "prom/statsd-exporter:v0.22.5"
 statsd_exporter_docker_labels:
   - prometheus
   - exporter
   - statsd_exporter
 statsd_exporter_host_address: 127.0.0.1
 statsd_exporter_host_port: 9102
-statsd_exporter_version: '0.20.2'
+statsd_exporter_version: '0.22.5'
 statsd_exporter_arch: linux-amd64
 statsd_exporter_metrics_path: metrics
 statsd_exporter_user: statsd_exporter
