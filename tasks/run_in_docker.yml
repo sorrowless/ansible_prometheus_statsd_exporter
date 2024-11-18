@@ -1,10 +1,9 @@
 ---
 - name: Start docker statsd_exporter container
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     state: present
     project_name: prometheus_statsd_exporter
     definition:
-      version: '2'
       services:
         statsd_exporter:
           image: "{{ statsd_exporter_docker_image }}"
@@ -21,5 +20,5 @@
           labels: "{{ statsd_exporter_docker_labels }}"
       networks:
         default:
-          external:
-            name: "{{ statsd_exporter_docker_network_name }}"
+          external: true
+          name: "{{ statsd_exporter_docker_network_name }}"
